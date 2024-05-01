@@ -19,9 +19,9 @@ namespace OnlineStoreProject.Models.Database
         {
             PhotoUrl = photoUrl;
         }
-        public ProductPhoto(string photoUrl, int productId)
+
+        public ProductPhoto(string photoUrl, int productId) : this(photoUrl)
         {
-            PhotoUrl = photoUrl;
             ProductId = productId;
         }
     }

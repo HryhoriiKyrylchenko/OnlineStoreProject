@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineStoreProject.Models.Database
 {
@@ -11,6 +12,8 @@ namespace OnlineStoreProject.Models.Database
         [ForeignKey("AddressId")]
         public virtual Address? Address { get; set; }
         public string? AdditionalInfo { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<Product> Products { get; set; }
         public Manufacturer(string name)
         {

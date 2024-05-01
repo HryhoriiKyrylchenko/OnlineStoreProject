@@ -22,11 +22,14 @@ namespace OnlineStoreProject.Models.Database
 
         public int Quantity { get; set; }
 
-        public ReceiptItem(int receiptId, int productId, int quantity)
+        public ReceiptItem(int productId, int quantity)
+        {
+            Quantity = quantity;
+        }
+
+        public ReceiptItem(int productId, int quantity, int receiptId) : this(productId,quantity)
         {
             ReceiptId = receiptId;
-            ProductId = productId;
-            Quantity = quantity;
         }
     }
 }

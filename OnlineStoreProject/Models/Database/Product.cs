@@ -28,14 +28,14 @@ namespace OnlineStoreProject.Models.Database
         [ForeignKey("ManufacturerId")]
         public Manufacturer? Manufacturer { get; set; }
 
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
         public decimal? DiscountPercentage { get; set; }
 
-        public int? CategoryId { get; set; }
+        public int? ProductCategoryId { get; set; }
 
-        [ForeignKey("CategoryId")]
-        public virtual ProductCategory? Category { get; set; }
+        [ForeignKey("ProductCategoryId")]
+        public virtual ProductCategory? ProductCategory { get; set; }
 
         public int WarehouseId { get; set; }
 
@@ -46,6 +46,7 @@ namespace OnlineStoreProject.Models.Database
 
         public string? AdditionalInfo { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<MovementHistory> MovementHistories { get; set; }
 
         [JsonIgnore]
@@ -54,22 +55,22 @@ namespace OnlineStoreProject.Models.Database
         [JsonIgnore]
         public virtual ICollection<ReceiptItem> ReceiptItems { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<ProductPhoto> ProductPhotos { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<ProductInZonePosition> ProductsInZonePositions { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<Label> Labels { get; set; }
 
-        public Product(string productCode, string name, UnitsOfMeasureEnum? unitOfMeasure, decimal? quantity, int? capacity, decimal price, int warehouseId)
+        public Product(string productCode, string name, int warehouseId)
         {
             ProductCode = productCode;
             Name = name;
-            UnitOfMeasure = unitOfMeasure;
-            Quantity = quantity;
-            Capacity = capacity;
-            Price = price;
             WarehouseId = warehouseId;
 
             MovementHistories = new List<MovementHistory>();
@@ -79,6 +80,20 @@ namespace OnlineStoreProject.Models.Database
             ProductPhotos = new List<ProductPhoto>();
             ProductsInZonePositions = new List<ProductInZonePosition>();
             Labels = new List<Label>();
+        }
+
+        public Product(string productCode, 
+                        string name, 
+                        UnitsOfMeasureEnum? unitOfMeasure, 
+                        decimal? quantity, 
+                        int? capacity, 
+                        decimal price, 
+                        int warehouseId) : this(productCode, name, warehouseId)
+        {
+            UnitOfMeasure = unitOfMeasure;
+            Quantity = quantity;
+            Capacity = capacity;
+            Price = price;
         }
 
         public void AddProductDetail(string key, string value)

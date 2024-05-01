@@ -13,7 +13,7 @@ namespace OnlineStoreProject.Models.Database
 
         public int Capacity { get; set; }
 
-        public int ZoneId { get; set; }
+        public int? ZoneId { get; set; }
 
         [ForeignKey("ZoneId")]
         public virtual Zone? Zone { get; set; }
@@ -28,10 +28,9 @@ namespace OnlineStoreProject.Models.Database
         [InverseProperty("DestinationZonePosition")]
         public virtual ICollection<MovementHistory> DestinationMovementHistories { get; set; }
 
-        public ZonePosition(string name, int zoneId, int capacity)
+        public ZonePosition(string name, int capacity)
         {
             Name = name;
-            ZoneId = zoneId;
             Capacity = capacity;
 
             ProductsInZonePosition = new List<ProductInZonePosition>();

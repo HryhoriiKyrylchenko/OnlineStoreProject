@@ -11,14 +11,18 @@ namespace OnlineStoreProject.Models.Database
         [Required]
         public string Barcode { get; set; }
 
-        public int ProductId { get; set; }
+        public int? ProductId { get; set; }
 
         [ForeignKey("ProductId")]
         public virtual Product? Product { get; set; }
 
-        public Label(string barcode, int productId)
+        public Label(string barcode)
         {
             Barcode = barcode;
+        }
+
+        public Label(string barcode, int productId) : this(barcode)
+        {
             ProductId = productId;
         }
     }

@@ -22,10 +22,9 @@ namespace OnlineStoreProject.Models.Database
         [JsonIgnore]
         public virtual ICollection<Receipt> Receipts { get; set; }
 
-        public Supplier(string name, int addressId)
+        public Supplier(string name)
         {
             Name = name;
-            AddressId = addressId;
 
             Receipts = new List<Receipt>();
         }

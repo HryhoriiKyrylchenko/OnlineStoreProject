@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineStoreProject.Models.Database
 {
@@ -25,7 +26,8 @@ namespace OnlineStoreProject.Models.Database
 
         public virtual ICollection<Supplier> Suppliers { get; set; }
 
-        public virtual ICollection<Customer> Customers { get; set; }
+        [JsonIgnore]
+        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
         public virtual ICollection<Manufacturer> Manufacturers { get; set; }
 
         public Address(string country, string index, string city, string street, string buildingNumber)
@@ -39,7 +41,7 @@ namespace OnlineStoreProject.Models.Database
 
             Warehouses = new List<Warehouse>();
             Suppliers = new List<Supplier>();
-            Customers = new List<Customer>();
+            CustomerAddresses = new List<CustomerAddress>();
             Manufacturers = new List<Manufacturer>();
         }
 

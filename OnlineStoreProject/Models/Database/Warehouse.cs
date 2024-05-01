@@ -21,10 +21,9 @@ namespace OnlineStoreProject.Models.Database
 
         public virtual ICollection<Product> Products { get; set; }
 
-        public Warehouse(string name, int addressId)
+        public Warehouse(string name)
         {
             Name = name;
-            AddressId = addressId;
 
             Zones = new List<Zone>();
             Products = new List<Product>();

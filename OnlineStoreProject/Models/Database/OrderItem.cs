@@ -11,7 +11,7 @@ namespace OnlineStoreProject.Models.Database
 
         public int? OrderId { get; set; }
 
-        [ForeignKey("ShipmentId")]
+        [ForeignKey("OrderId")]
         [JsonIgnore]
         public virtual Order? Order { get; set; }
 
@@ -22,11 +22,15 @@ namespace OnlineStoreProject.Models.Database
 
         public int Quantity { get; set; }
 
-        public OrderItem(int orderId, int productId, int quantity)
+        public OrderItem(int productId, int quantity)
         {
-            OrderId = orderId;
             ProductId = productId;
             Quantity = quantity;
+        }
+
+        public OrderItem(int orderId, int productId, int quantity) : this(productId, quantity)
+        {
+            OrderId = orderId;
         }
     }
 }

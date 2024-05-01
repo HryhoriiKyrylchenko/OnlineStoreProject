@@ -49,9 +49,9 @@ namespace OnlineStoreProject.Models.Database
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Address>()
-                .HasMany(a => a.Customers)
-                .WithOne(c => c.Address)
-                .HasForeignKey(c => c.AddressId)
+                .HasMany(a => a.CustomerAddresses)
+                .WithOne(ca => ca.Address)
+                .HasForeignKey(ca => ca.AddressId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Address>()
@@ -61,9 +61,9 @@ namespace OnlineStoreProject.Models.Database
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Customer>()
-                .HasOne(c => c.Address)
-                .WithMany(a => a.Customers)
-                .HasForeignKey(c => c.AddressId)
+                .HasMany(c => c.CustomerAddresses)
+                .WithOne(ca => ca.Customer)
+                .HasForeignKey(ca => ca.CustomerId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Customer>()
@@ -76,6 +76,18 @@ namespace OnlineStoreProject.Models.Database
                 .HasMany(c => c.Orders)
                 .WithOne(o => o.Customer)
                 .HasForeignKey(o => o.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CustomerAddress>()
+                .HasOne(ca => ca.Customer)
+                .WithMany(c => c.CustomerAddresses)
+                .HasForeignKey(ca => ca.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CustomerAddress>()
+                .HasOne(ca => ca.Address)
+                .WithMany(a => a.CustomerAddresses)
+                .HasForeignKey(ca => ca.AddressId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Label>()
@@ -139,9 +151,9 @@ namespace OnlineStoreProject.Models.Database
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Product>()
-                .HasOne(p => p.Category)
+                .HasOne(p => p.ProductCategory)
                 .WithMany(c => c.Products)
-                .HasForeignKey(p => p.CategoryId)
+                .HasForeignKey(p => p.ProductCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Product>()
@@ -199,8 +211,8 @@ namespace OnlineStoreProject.Models.Database
 
             modelBuilder.Entity<ProductCategory>()
                 .HasMany(c => c.Products)
-                .WithOne(p => p.Category)
-                .HasForeignKey(p => p.CategoryId)
+                .WithOne(p => p.ProductCategory)
+                .HasForeignKey(p => p.ProductCategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<ProductInZonePosition>()

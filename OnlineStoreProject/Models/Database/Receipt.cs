@@ -10,12 +10,12 @@ namespace OnlineStoreProject.Models.Database
 
         public DateTime ReceiptDate { get; set; }
 
-        public int SupplierId { get; set; }
+        public int? SupplierId { get; set; }
 
         [ForeignKey("SupplierId")]
         public virtual Supplier? Supplier { get; set; }
 
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         [ForeignKey("UserId")]
         public virtual User? User { get; set; }
@@ -28,14 +28,18 @@ namespace OnlineStoreProject.Models.Database
 
         public virtual ICollection<ReceiptItem> ReceiptItems { get; set; }
 
-        public Receipt(DateTime receiptDate, int supplierId, int userId, string batchNumber)
+        public Receipt(DateTime receiptDate, string batchNumber)
         {
             ReceiptDate = receiptDate;
-            SupplierId = supplierId;
-            UserId = userId;
             BatchNumber = batchNumber;
 
             ReceiptItems = new List<ReceiptItem>();
+        }
+
+        public Receipt(DateTime receiptDate, int supplierId, int userId, string batchNumber) : this(receiptDate, batchNumber)
+        {
+            SupplierId = supplierId;
+            UserId = userId;
         }
     }
 }

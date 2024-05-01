@@ -16,14 +16,18 @@ namespace OnlineStoreProject.Models.Database
 
         public DateTime? DateOfBirth { get; set; }
 
-        public int? AddressId { get; set; }
+        public string EmailAddress { get; set; }
 
-        [ForeignKey("AddressId")]
-        public virtual Address? Address { get; set; }
+        public string Password { get; set; }
+
+        public int PhoneNumber { get; set; }
 
         public decimal? DiscountPercentage { get; set; }
 
         public string? AdditionalInfo { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<Shipment> Shipments { get; set; }
@@ -31,13 +35,17 @@ namespace OnlineStoreProject.Models.Database
         [JsonIgnore]
         public virtual ICollection<Order> Orders { get; set; }
 
-        public Customer(string firstname, string lastname)
+        public Customer(string firstname, string lastname, string emailAddress, string password, int phoneNumber)
         {
             Firstname = firstname;
             Lastname = lastname;
+            EmailAddress = emailAddress;
+            Password = password;
+            PhoneNumber = phoneNumber;
 
             Orders = new List<Order>();
             Shipments = new List<Shipment>();
+            CustomerAddresses = new List<CustomerAddress>();
         }
 
         public override string ToString()
