@@ -8,7 +8,7 @@ namespace OnlineStoreProject.Controllers
 {
     public class HomeController : Controller
     {
-        ApplicationContext _context;
+        private ApplicationContext _context;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ApplicationContext context, ILogger<HomeController> logger)
@@ -19,7 +19,6 @@ namespace OnlineStoreProject.Controllers
 
         public IActionResult Index()
         {
-            _context.Users.ToList();
             return View();
         }
 
