@@ -1,0 +1,78 @@
+﻿@model Customer
+@{
+    ViewData["Title"] = "Account";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="mb-4">My Account</h2>
+
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Account Information</h3>
+                    <dl class="row">
+                        <dt class="col-sm-3">First Name</dt>
+                        <dd class="col-sm-9">@Model.Firstname</dd>
+                        <dt class="col-sm-3">Last Name</dt>
+                        <dd class="col-sm-9">@Model.Lastname</dd>
+                        <dt class="col-sm-3">Date of Birth</dt>
+                        <dd class="col-sm-9">@Model.DateOfBirth?.ToString("yyyy-MM-dd")</dd>
+                        <dt class="col-sm-3">Email Address</dt>
+                        <dd class="col-sm-9">@Model.EmailAddress</dd>
+                        <dt class="col-sm-3">Phone Number</dt>
+                        <dd class="col-sm-9">@Model.PhoneNumber</dd>
+                    </dl>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title">Account Information</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><a href="#" class="text-decoration-none">Edit Profile</a></li>
+                                <li class="list-group-item"><a href="#" class="text-decoration-none">Change Password</a></li>
+                                <li class="list-group-item"><a href="#" class="text-decoration-none">Manage Addresses</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title">Order History</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><a href="#" class="text-decoration-none">View Orders</a></li>
+                                <li class="list-group-item"><a href="#" class="text-decoration-none">Track Order</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h3 class="card-title">Wishlist</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><a href="#" class="text-decoration-none">View Wishlist</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Logout</h3>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"><a asp-area="" asp-controller="Home" asp-action="Logout" class="text-decoration-none">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

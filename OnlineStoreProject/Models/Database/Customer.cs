@@ -35,6 +35,10 @@ namespace OnlineStoreProject.Models.Database
         [JsonIgnore]
         public virtual ICollection<Order> Orders { get; set; }
 
+        public Customer() : this(string.Empty, string.Empty, string.Empty, string.Empty, default)
+        { 
+        }
+
         public Customer(string firstname, string lastname, string emailAddress, string password, int phoneNumber)
         {
             Firstname = firstname;
