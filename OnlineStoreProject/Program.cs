@@ -14,6 +14,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<AuthOptions>();
 builder.Services.AddTransient<CustomerService>();
 builder.Services.AddTransient<UserService>();
+builder.Services.AddTransient<DBService>();
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 .AddCookie(options =>

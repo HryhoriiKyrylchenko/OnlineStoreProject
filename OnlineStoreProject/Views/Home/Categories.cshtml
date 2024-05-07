@@ -1,0 +1,28 @@
+﻿@model List<CategoryViewModel>
+
+@{
+    ViewData["Title"] = "Categories";
+}
+
+<div class="container">
+    <h1>Categories</h1>
+    <ul class="list-group">
+        @foreach (var category in Model)
+        {
+            <li class="list-group-item">
+                <a href="@Url.Action("Category", "Categories", new { categoryId = category.Id })">@category.CategoryName</a>
+                @if (category.Subcategories != null && category.Subcategories.Any())
+                {
+                    <ul>
+                        @foreach (var subcategory in category.Subcategories)
+                        {
+                            <li>
+                                <a asp-controller="Home" asp-action="Products" asp-route-categoryId="@subcategory.Id">@subcategory.CategoryName</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </li>
+        }
+    </ul>
+</div>

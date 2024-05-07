@@ -1,0 +1,59 @@
+﻿@model List<ProductViewModel>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<div class="container">
+    <h1>Products</h1>
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form asp-action="Category" asp-controller="Categories" method="get">
+                <div class="form-row align-items-center">
+                    <div class="col-auto">
+                        <label class="sr-only" for="inlineFormInputName">Name</label>
+                        <input type="text" class="form-control mb-2" id="inlineFormInputName" placeholder="Search by name" name="searchName">
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary mb-2">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form asp-action="Category" asp-controller="Categories" method="get">
+                <div class="form-row align-items-center">
+                    <div class="col-auto my-1">
+                        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="sortBy">
+                            <option selected value="Name">Sort by Name</option>
+                            <option value="Price">Sort by Price</option>
+                        </select>
+                    </div>
+                    <div class="col-auto my-1">
+                        <button type="submit" class="btn btn-primary">Apply</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card h-100">
+                    <img class="card-img-top" src="@product.ImageUrl" alt="">
+                    <div class="card-body">
+                        <h4 class="card-title">@product.Name</h4>
+                        <p class="card-text">@product.Description</p>
+                        <h5>@string.Format("{0:C}", product.Price)</h5>
+                    </div>
+                    <div class="card-footer">
+                        <button class="btn btn-primary">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

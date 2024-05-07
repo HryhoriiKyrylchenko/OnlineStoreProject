@@ -16,21 +16,62 @@ namespace OnlineStoreProject.Controllers
     {
         private CustomerService _customerService;
         private UserService _userService;
+        private DBService _dbService;
 
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(CustomerService customerService, 
             ILogger<HomeController> logger,
-            UserService userService)
+            UserService userService,
+            DBService dbService)
         {
             _customerService = customerService;
             _logger = logger;
             _userService = userService;
+            _dbService = dbService;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        public IActionResult Categories()
+        {
+            var categories = _dbService.GetProductCategories();
+            return View(categories);
+        }
+
+        public IActionResult Products(int categoryId, string searchName, string sortBy)
+        {
+            var productsQuery = _dbService.GetProductsQuery(categoryId);
+
+            if (!string.IsNullOrEmpty(searchName))
+            {
+                productsQuery = productsQuery.Where(p => p.Name.Contains(searchName));
+            }
+
+            productsQuery = ApplySorting(productsQuery, sortBy);
+
+            var products = productsQuery
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description ?? "",
+                    Price = p.Price,
+                    ImageUrl = p.ProductPhotos.FirstOrDefault() != null ? p.ProductPhotos.First().PhotoUrl : ""
+                })
+                .ToList();
+
+            return View(products);
+        }
+
+        public IActionResult Cart()
+        {
+            var cartItems = new List<CartItemViewModel>(); /////////////////////////////////// Implementation needed
+
+            return View(cartItems);
         }
 
         public IActionResult Privacy()
@@ -163,6 +204,19 @@ namespace OnlineStoreProject.Controllers
 
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+        }
+
+        private IQueryable<Product> ApplySorting(IQueryable<Product> productsQuery, string sortBy)
+        {
+            switch (sortBy)
+            {
+                case "Name":
+                    return productsQuery.OrderBy(p => p.Name);
+                case "Price":
+                    return productsQuery.OrderBy(p => p.Price);
+                default:
+                    return productsQuery.OrderBy(p => p.Name);
+            }
         }
     }
 }
