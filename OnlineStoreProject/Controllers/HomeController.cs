@@ -42,14 +42,9 @@ namespace OnlineStoreProject.Controllers
             return View(categories);
         }
 
-        public IActionResult Products(int categoryId, string searchName, string sortBy)
+        public IActionResult Products(int categoryId, string sortBy)
         {
-            var productsQuery = _dbService.GetProductsQuery(categoryId);
-
-            if (!string.IsNullOrEmpty(searchName))
-            {
-                productsQuery = productsQuery.Where(p => p.Name.Contains(searchName));
-            }
+            var productsQuery = _dbService.GetProductsQuerry(categoryId);
 
             productsQuery = ApplySorting(productsQuery, sortBy);
 
@@ -148,7 +143,7 @@ namespace OnlineStoreProject.Controllers
             {
                 await AuthenticateUser(username, "", "Admin");
 
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home"); ///////////////////////
             }
 
             return RedirectToAction("Login", "Home");

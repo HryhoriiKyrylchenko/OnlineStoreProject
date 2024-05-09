@@ -1,0 +1,35 @@
+﻿@model List<CategoryWithProductsViewModel>
+
+<div class="container">
+    <div class="sidebar">
+        <h2>Categories</h2>
+        <ul>
+            @foreach (var category in Model)
+            {
+                <li>
+                    @category.CategoryName
+                    <button onclick="addSubcategory(@category.Id)">Add</button>
+                    @if (!category.Subcategories.Any() && !category.Products.Any())
+                    {
+                        <button onclick="deleteCategory(@category.Id)">Delete</button>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="main-content">
+        <h2 id="selected-category">Selected category</h2>
+        <div class="products">
+            @foreach (var product in Model.SelectMany(c => c.Products))
+            {
+                <div class="product-card">
+                    <h3>@product.ProductName</h3>
+                    <p>@product.Description</p>
+                    <button onclick="editProduct(@product.Id)">Edit</button>
+                    <button onclick="deleteProduct(@product.Id)">Delete</button>
+                </div>
+            }
+        </div>
+        <button id="add-product-btn" onclick="addProduct()">Add product</button>
+    </div>
+</div>
