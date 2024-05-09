@@ -27,6 +27,8 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("CustomerOnly", policy =>
         policy.RequireRole("Customer"));
+    options.AddPolicy("AdminOnly", policy =>
+        policy.RequireRole("Admin"));
 });
 
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");

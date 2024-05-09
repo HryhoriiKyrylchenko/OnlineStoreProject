@@ -143,7 +143,13 @@ namespace OnlineStoreProject.Controllers
             {
                 await AuthenticateUser(username, "", "Admin");
 
-                return RedirectToAction("Index", "Home"); ///////////////////////
+                var routeValues = new RouteValueDictionary {
+                    { "controller", "Home" },
+                    { "action", "Index" },
+                    { "area", "Editing" }
+                };
+
+                return RedirectToAction("Index", "Home", routeValues);
             }
 
             return RedirectToAction("Login", "Home");

@@ -1,4 +1,5 @@
-﻿@model List<CategoryWithProductsViewModel>
+﻿@using OnlineStoreProject.Areas.Editing.Models
+@model List<CategoryWithProductsViewModel>
 
 <div class="container">
     <div class="sidebar">
@@ -23,7 +24,7 @@
             @foreach (var product in Model.SelectMany(c => c.Products))
             {
                 <div class="product-card">
-                    <h3>@product.ProductName</h3>
+                    <h3>@product.Name</h3>
                     <p>@product.Description</p>
                     <button onclick="editProduct(@product.Id)">Edit</button>
                     <button onclick="deleteProduct(@product.Id)">Delete</button>
