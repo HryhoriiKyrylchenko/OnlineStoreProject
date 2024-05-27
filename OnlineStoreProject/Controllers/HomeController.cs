@@ -38,13 +38,29 @@ namespace OnlineStoreProject.Controllers
 
         public IActionResult Categories()
         {
-            var categories = _dbService.GetProductCategories();
+            if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+            {
+                var routeValues = new RouteValueDictionary {
+                    { "controller", "Home" },
+                    { "action", "Index" },
+                    { "area", "Editing" }
+                };
+
+                return RedirectToAction("Index", "Home", routeValues);
+            }
+
+            var categories = _dbService.GetProductCategoriesViewModel();
             return View(categories);
         }
 
-        public IActionResult Products(int categoryId, string sortBy)
+        public IActionResult Products(int categoryId, string? sortBy)
         {
             var productsQuery = _dbService.GetProductsQuerry(categoryId);
+
+            if(string.IsNullOrWhiteSpace(sortBy))
+            {
+                sortBy = "Name";
+            }
 
             productsQuery = ApplySorting(productsQuery, sortBy);
 
@@ -55,18 +71,12 @@ namespace OnlineStoreProject.Controllers
                     Name = p.Name,
                     Description = p.Description ?? "",
                     Price = p.Price,
-                    ImageUrl = p.ProductPhotos.FirstOrDefault() != null ? p.ProductPhotos.First().PhotoUrl : ""
+                    ImageUrl = p.ProductPhotos.FirstOrDefault() != null ? p.ProductPhotos.First().PhotoUrl : "",
+                    CategoryId = categoryId
                 })
                 .ToList();
 
             return View(products);
-        }
-
-        public IActionResult Cart()
-        {
-            var cartItems = new List<CartItemViewModel>(); /////////////////////////////////// Implementation needed
-
-            return View(cartItems);
         }
 
         public IActionResult Privacy()
@@ -107,9 +117,9 @@ namespace OnlineStoreProject.Controllers
         [Authorize(Policy = "CustomerOnly")]
         public IActionResult Account()
         {
-            string? customername = HttpContext.User.Identity?.Name;
+            string? customerEmail = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
-            Customer? customer = _customerService.GetCustomerByEmail(customername);
+            Customer? customer = _customerService.GetCustomerByEmail(customerEmail);
 
             if (customer == null)
             {

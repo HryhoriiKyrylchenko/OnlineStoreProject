@@ -10,7 +10,7 @@
         @foreach (var category in Model)
         {
             <li class="list-group-item">
-                <a href="@Url.Action("Category", "Categories", new { categoryId = category.Id })">@category.CategoryName</a>
+                <a asp-controller="Home" asp-action="Products" asp-route-categoryId="@category.Id">@category.CategoryName</a>
                 @if (category.Subcategories != null && category.Subcategories.Any())
                 {
                     <ul>

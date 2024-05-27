@@ -55,6 +55,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\Editing\Data\" />
+    <Folder Include="Areas\Editing\Models\" />
     <Folder Include="Filters\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\css\" />
     <Folder Include="wwwroot\lib\bootstrap\dist\js\" />

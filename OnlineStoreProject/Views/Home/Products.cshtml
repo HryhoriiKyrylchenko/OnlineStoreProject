@@ -7,7 +7,7 @@
 <div class="container">
     <h1>Products</h1>
 
-    <div class="row mb-4">
+    @* <div class="row mb-4">
         <div class="col-md-6">
             <form asp-action="Products" asp-controller="Home" method="get">
                 <div class="form-row align-items-center">
@@ -18,12 +18,12 @@
                         </select>
                     </div>
                     <div class="col-auto my-1">
-                        <button type="submit" class="btn btn-primary">Apply</button>
+                        <button >Apply</button>
                     </div>
                 </div>
             </form>
         </div>
-    </div>
+    </div> *@
 
     <div class="row">
         @foreach (var product in Model)
@@ -37,7 +37,14 @@
                         <h5>@string.Format("{0:C}", product.Price)</h5>
                     </div>
                     <div class="card-footer">
-                        <button class="btn btn-primary">Add to Cart</button>
+                        <form asp-action="AddToCart" asp-controller="Cart" asp-area="" method="post">
+                            <input type="hidden" name="ProductId" value="@product.Id" />
+                            <input type="hidden" name="ProductName" value="@product.Name" />
+                            <input type="hidden" name="ImageUrl" value="@product.ImageUrl" />
+                            <input type="hidden" name="Price" value="@product.Price" />
+                            <input type="number" name="Quantity" value="1" min="1" class="form-control mb-2" />
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
                     </div>
                 </div>
             </div>

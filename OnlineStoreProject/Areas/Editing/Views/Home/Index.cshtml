@@ -1,0 +1,132 @@
+﻿@model List<CategoryViewModel>
+
+<div class="container">
+    <div class="sidebar">
+        <h2>Categories</h2>
+        <button class="btn btn-secondary" onclick="addRootCategory()">Add root category</button>
+        <ul class="list-group">
+            @foreach (var category in Model)
+            {
+                <li class="list-group-item" data-category-id="@category.Id">
+                    <span class="btn-link" onclick="showProducts('@category.Id')" style="cursor:pointer;">@category.CategoryName</span>
+                    <button class="btn btn-secondary" onclick="addSubcategory('@category.Id')">Add subcategory</button>
+                    @if (category.Subcategories == null || !category.Subcategories.Any())
+                    {
+                        <button class="btn btn-secondary" onclick="deleteCategory('@category.Id')">Delete</button>
+                    }
+                    @if (category.Subcategories != null && category.Subcategories.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var subcategory in category.Subcategories)
+                            {
+                                <li class="list-group-item" data-category-id="@subcategory.Id">
+                                    <span class="btn-link" onclick="showProducts('@subcategory.Id')" style="cursor:pointer;">@subcategory.CategoryName</span>
+                                    <button class="btn btn-secondary" onclick="addSubcategory('@subcategory.Id')">Add subcategory</button>
+                                    @if (subcategory.Subcategories == null || !subcategory.Subcategories.Any())
+                                    {
+                                        <button class="btn btn-secondary" onclick="deleteCategory('@subcategory.Id')">Delete</button>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="main-content">
+        <h2 id="selected-category" data-category-id="">Selected category</h2>
+        <div class="products">
+            <!-- Products will be dynamically loaded here -->
+        </div>
+        <button class="btn btn-secondary" id="add-product-btn" onclick="addProduct()">Add product</button>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function addRootCategory() {
+            var categoryName = prompt("Enter category name:");
+            if (categoryName) {
+                $.post('@Url.Action("AddCategory", "Home", new { area = "Editing" })', { categoryName: categoryName, parentCategoryId: null }, function () {
+                    location.reload();
+                });
+            }
+        }
+
+        function addSubcategory(parentCategoryId) {
+            var categoryName = prompt("Enter subcategory name:");
+            if (categoryName) {
+                $.post('@Url.Action("AddCategory", "Home", new { area = "Editing" })', { categoryName: categoryName, parentCategoryId: parentCategoryId }, function () {
+                    location.reload();
+                });
+            }
+        }
+
+        function deleteCategory(categoryId) {
+            if (confirm("Are you sure you want to delete this category?")) {
+                $.post('@Url.Action("DeleteCategory", "Home", new { area = "Editing" })', { categoryId: categoryId }, function () {
+                    location.reload();
+                });
+            }
+        }
+
+        function addProduct() {
+            var name = prompt("Enter product name:");
+            var description = prompt("Enter product description:");
+            var price = prompt("Enter product price:");
+            var categoryId = $("#selected-category").data("category-id");
+            if (name && description && price && categoryId) {
+                $.post('@Url.Action("AddProduct", "Home", new { area = "Editing" })', { name: name, description: description, price: parseFloat(price), categoryId: categoryId }, function () {
+                    location.reload();
+                });
+            }
+        }
+
+        function deleteProduct(productId) {
+            if (confirm("Are you sure you want to delete this product?")) {
+                $.post('@Url.Action("DeleteProduct", "Home", new { area = "Editing" })', { productId: productId }, function () {
+                    location.reload();
+                });
+            }
+        }
+
+        function showProducts(categoryId) {
+            var selectedCategoryName = $("li[data-category-id='" + categoryId + "']").text().trim();
+            $("#selected-category").text("Selected category: " + selectedCategoryName).data("category-id", categoryId);
+
+            // Clear existing products
+            $(".products").empty();
+
+            // Load products for the selected category via AJAX
+            $.get('@Url.Action("GetProducts", "Home", new { area = "Editing" })', { categoryId: categoryId }, function (data) {
+                if (data && data.length > 0) {
+                    data.forEach(function (product) {
+                        $(".products").append(
+                            '<div class="product-card">' +
+                            '<h3>' + product.name + '</h3>' +
+                            '<p>' + product.description + '</p>' +
+                            '<p>Price: ' + product.price + '</p>' +
+                            '<button class="btn btn-secondary" onclick="editProduct(' + product.id + ')">Edit</button>' +
+                            '<button class="btn btn-secondary" onclick="deleteProduct(' + product.id + ')">Delete</button>' +
+                            '</div>'
+                        );
+                    });
+                } else {
+                    $(".products").append('<p>No products found for this category.</p>');
+                }
+            });
+        }
+
+        function editProduct(productId) {
+            var name = prompt("Enter new product name:");
+            var description = prompt("Enter new product description:");
+            var price = prompt("Enter new product price:");
+            if (name && description && price) {
+                $.post('@Url.Action("UpdateProduct", "Home", new { area = "Editing" })', { id: productId, name: name, description: description, price: parseFloat(price) }, function () {
+                    location.reload();
+                });
+            }
+        }
+    </script>
+}

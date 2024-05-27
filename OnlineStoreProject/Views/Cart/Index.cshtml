@@ -1,0 +1,38 @@
+﻿@model ShoppingCart
+
+<h2>Your Shopping Cart</h2>
+
+@if (Model.Items.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.Price.ToString("c")</td>
+                    <td>@((item.Price * item.Quantity).ToString("c"))</td>
+                    <td>
+                        <a asp-action="RemoveFromCart" asp-route-productId="@item.ProductId" class="btn btn-danger">Remove</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <h3>Total: @Model.GetTotal().ToString("c")</h3>
+    <a asp-action="ClearCart" class="btn btn-danger">Clear Cart</a>
+}
+else
+{
+    <p>Your cart is empty.</p>
+}
